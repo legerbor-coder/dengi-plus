@@ -590,31 +590,42 @@ select {
         flex-wrap: wrap;
     }
 }
-/* Исправление поля даты на телефоне */
-input[type="date"] {
-    display: block;
+/* Исправление ширины формы и даты на телефоне */
+#operation-form,
+#transaction-form {
     width: 100%;
     max-width: 100%;
     min-width: 0;
     box-sizing: border-box;
+}
+
+#transaction-form input,
+#transaction-form select,
+#transaction-form button {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+#transaction-form input[type="date"] {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    appearance: none;
     padding: 12px;
 }
 
-#operation-form,
-#transaction-form {
-    min-width: 0;
-    max-width: 100%;
-    box-sizing: border-box;
-}
+@media (max-width: 480px) {
+    #operation-form {
+        padding: 16px;
+    }
 
-#operation-form input,
-#operation-form select,
-#operation-form button {
-    max-width: 100%;
-    min-width: 0;
-    box-sizing: border-box;
-}
-
-#transaction-form {
-    width: 100%;
+    #transaction-form input[type="date"] {
+        font-size: 16px;
+        padding: 12px 8px;
+    }
 }
