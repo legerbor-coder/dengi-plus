@@ -1,0 +1,592 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --background: #061426;
+    --card: #0c2038;
+    --card-light: #122b48;
+    --green: #00e58b;
+    --green-dark: #00b96b;
+    --red: #ff3155;
+    --text: #f3f7ff;
+    --muted: #9bb0ce;
+    --border: #1b3d60;
+}
+
+body {
+    min-height: 100vh;
+    padding: 25px 15px;
+    background: var(--background);
+    color: var(--text);
+    font-family: Arial, sans-serif;
+}
+
+.app {
+    width: 100%;
+    max-width: 650px;
+    margin: 0 auto;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 25px;
+}
+
+.logo {
+    width: 55px;
+    height: 55px;
+    display: grid;
+    place-items: center;
+    border-radius: 16px;
+    background: var(--green);
+    color: #062b21;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.header h1 {
+    font-size: 28px;
+}
+
+.header h1 span {
+    color: var(--green);
+}
+
+.header p {
+    margin-top: 5px;
+    color: var(--muted);
+}
+
+.balance-card {
+    padding: 25px;
+    border: 1px solid #087f65;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #075b50, #063047);
+    margin-bottom: 25px;
+}
+
+.balance-card > p {
+    color: #c7f9e7;
+    font-size: 14px;
+}
+
+.balance-card h2 {
+    margin: 12px 0 22px;
+    font-size: clamp(28px, 6vw, 40px);
+    overflow-wrap: anywhere;
+}
+
+.balance-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.balance-details > div {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+
+.balance-details span {
+    color: #c0d3e8;
+    font-size: 13px;
+}
+
+.balance-details strong {
+    font-size: clamp(14px, 3.5vw, 19px);
+    overflow-wrap: anywhere;
+}
+
+.income strong {
+    color: var(--green);
+}
+
+.expense strong {
+    color: #ff6680;
+}
+
+h3 {
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 28px;
+}
+
+button {
+    border: none;
+    border-radius: 12px;
+    padding: 15px 10px;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover {
+    filter: brightness(1.12);
+    transform: translateY(-1px);
+}
+
+.income-button {
+    background: var(--green);
+    color: #05291e;
+}
+
+.expense-button {
+    background: var(--red);
+}
+
+.panel {
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    background: var(--card);
+}
+
+.section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.section-heading h3 {
+    margin-bottom: 15px;
+}
+
+#operation-count {
+    color: var(--green);
+    font-size: 13px;
+    margin-bottom: 15px;
+}
+
+.history {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.empty-state {
+    padding: 25px 10px;
+    text-align: center;
+}
+
+.empty-icon {
+    width: 55px;
+    height: 55px;
+    display: grid;
+    place-items: center;
+    margin: 0 auto 15px;
+    border-radius: 16px;
+    background: var(--card-light);
+    color: var(--green);
+    font-size: 28px;
+}
+
+.empty-state p {
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.empty-state span {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+label {
+    display: block;
+    margin: 15px 0 8px;
+    font-size: 14px;
+}
+
+input, select {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    outline: none;
+    background: var(--card-light);
+    color: var(--text);
+    font-size: 15px;
+}
+
+input:focus, select:focus {
+    border-color: var(--green);
+}
+
+.save-button {
+    width: 100%;
+    margin-top: 20px;
+    background: var(--green);
+    color: #05291e;
+}
+
+.cancel-button {
+    width: 100%;
+    margin-top: 10px;
+    background: #243b56;
+}
+
+footer {
+    padding: 15px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+@media (max-width: 420px) {
+    body {
+        padding: 15px 10px;
+    }
+
+    .panel {
+        padding: 15px;
+    }
+
+    .balance-card {
+        padding: 20px;
+    }
+    .actions {
+        gap: 8px;
+    }
+    button {
+        font-size: 12px;
+    }
+}
+.transaction-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.transaction-row:last-child {
+    border-bottom: none;
+}
+
+.transaction-icon {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    border-radius: 13px;
+    background: var(--card-light);
+    color: var(--green);
+    font-size: 24px;
+}
+
+.transaction-details {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+    gap: 6px;
+}
+
+.transaction-details strong {
+    overflow-wrap: anywhere;
+}
+
+.transaction-details span {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.transaction-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+}
+
+.transaction-right > strong {
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.transaction-right .income {
+    color: var(--green);
+}
+
+.transaction-right .expense {
+    color: #ff6680;
+}
+
+.delete-button {
+    padding: 6px 9px;
+    border: 1px solid var(--border);
+    background: var(--card-light);
+    color: var(--muted);
+    font-size: 11px;
+}
+.edit-button {
+    background: #1e40af;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 10px;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.edit-button:hover {
+    background: #2563eb;
+}
+
+.transaction-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+.goals-section {
+    margin: 28px 0;
+}
+
+.goals-section h2 {
+    margin-bottom: 16px;
+    color: #f8fafc;
+}
+
+.goal-form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.goal-form input {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    padding: 12px;
+    border: 1px solid #334155;
+    border-radius: 10px;
+    background: #172554;
+    color: #fff;
+    font-size: 14px;
+}
+
+.goal-form button {
+    grid-column: 1 / -1;
+    padding: 13px;
+    border: none;
+    border-radius: 10px;
+    background: #22c55e;
+    color: #052e16;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.goal-form button:hover {
+    background: #4ade80;
+}
+
+.goals-list {
+    display: grid;
+    gap: 14px;
+}
+
+.goal-card {
+    padding: 18px;
+    border: 1px solid #263b70;
+    border-radius: 14px;
+    background: #172554;
+}
+
+.goal-card h3 {
+    margin: 0 0 10px;
+    color: #f8fafc;
+    overflow-wrap: anywhere;
+}
+
+.goal-amounts {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 12px;
+    color: #cbd5e1;
+    font-size: 13px;
+}
+
+.goal-progress {
+    height: 10px;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #334155;
+}
+
+.goal-progress-fill {
+    height: 100%;
+    border-radius: 10px;
+    background: #22c55e;
+    transition: width 0.3s ease;
+}
+
+.goal-percent {
+    display: block;
+    margin-top: 8px;
+    color: #4ade80;
+    font-weight: 700;
+}
+
+.goal-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 14px;
+}
+
+.goal-actions button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.goal-add-button {
+    background: #2563eb;
+    color: white;
+}
+
+.goal-delete-button {
+    background: #7f1d1d;
+    color: white;
+}
+
+@media (max-width: 480px) {
+    .goal-form {
+        grid-template-columns: 1fr;
+    }
+}
+/* Адаптация Деньги+ для телефонов */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+button,
+input,
+select {
+    font: inherit;
+}
+
+button {
+    min-height: 44px;
+    touch-action: manipulation;
+}
+
+input,
+select {
+    max-width: 100%;
+}
+
+/* Планшеты и небольшие экраны */
+@media (max-width: 768px) {
+    body {
+        padding: 16px;
+    }
+
+    .container,
+    .app,
+    main {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .transaction-row {
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .transaction-details {
+        flex: 1;
+        min-width: 0;
+        overflow-wrap: anywhere;
+    }
+
+    .transaction-right {
+        max-width: 100%;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+}
+
+/* Небольшие телефоны */
+@media (max-width: 480px) {
+    body {
+        padding: 12px;
+    }
+
+    h1 {
+        font-size: 26px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .transaction-row {
+        align-items: flex-start;
+    }
+
+    .transaction-right {
+        width: 100%;
+    }
+
+    .transaction-right button {
+        flex: 1;
+        padding: 8px;
+    }
+
+    .goal-form {
+        grid-template-columns: 1fr;
+    }
+
+    .goal-form button {
+        width: 100%;
+    }
+
+    .goal-amounts {
+        flex-wrap: wrap;
+    }
+}
