@@ -590,3 +590,31 @@ select {
         flex-wrap: wrap;
     }
 }
+/* Исправление поля даты на телефоне */
+input[type="date"] {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: 12px;
+}
+
+#operation-form,
+#transaction-form {
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+#operation-form input,
+#operation-form select,
+#operation-form button {
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+#transaction-form {
+    width: 100%;
+}
