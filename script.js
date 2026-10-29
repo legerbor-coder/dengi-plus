@@ -122,82 +122,188 @@ function updateBalance() {
         `${count} ${word}`;
 }
 
+
 function renderHistory() {
     const history = document.getElementById("history");
-    history.replaceChildren();
-
-    if (transactions.length === 0) {
-        const empty = document.createElement("div");
-        empty.className = "empty-state";
-
-        const icon = document.createElement("div");
-        icon.className = "empty-icon";
-        icon.textContent = "₽";
-
-        const title = document.createElement("p");
-        title.textContent = "Пока нет операций";
-
-        const description = document.createElement("span")
-        description.textContent = "Добавь свой первый доход или расход";
-
-        empty.append(icon, title, description);
-        history.append(empty);
-        return;
-    }
-
-    const sorted = [...transactions].sort((a, b) =>
-        b.date.localeCompare(a.date) || b.id.localeCompare(a.id)
-    );
-
-    sorted.forEach(item => {
-        const row = document.createElement("div");
-        row.className = "transaction-row";
-
-        const icon = document.createElement("div");
-        icon.className = "transaction-icon";
-        icon.textContent = item.type === "income" ? "↙" : "↗";
-
-        const details = document.createElement("div");
-        details.className = "transaction-details";
-
-        const name = document.createElement("strong");
-        name.textContent = item.description;
-
-        const info = document.createElement("span");
-        info.textContent = `${item.category} · ${item.date}`;
-
-        details.append(name, info);
-
-        const right = document.createElement("div");
-        right.className = "transaction-right";
-
-        const amount = document.createElement("strong");
-        amount.className = item.type;
-        amount.textContent =
-            (item.type === "income" ? "+ " : "− ") +
-            formatMoney(item.amount);
-
-        const editButton = document.createElement("button");
-        editButton.className = "edit-button";
-        editButton.textContent = "Изменить";
-        editButton.type = "button";
-        editButton.addEventListener("click", () => {
-            editTransaction(item.id);
-        });
-
-        const deleteButton = document.createElement("button");
-        deleteButton.className = "delete-button";
-        deleteButton.textContent = "Удалить";
-        deleteButton.type = "button";
-        deleteButton.addEventListener("click", () => {
-            deleteTransaction(item.id);
-        });
-
-        right.append(amount, editButton, deleteButton);
-        row.append(icon, details, right);
-        history.append(row);
+    
+    const typeFilter = document.getElementById("filter-type");
+    const categoryFilter = document.getElementById("filter-category");
+    const periodFilter = document.getElementById("filter-period");
+    
+    // Запоминаем выбранные фильтры
+    const selectedType = typeFilter.value;
+    const selectedCategory = categoryFilter.value;
+    const selectedPeriod = periodFilter.value;
+    
+    // Обновляем список категорий
+    const categories = [...new Set(
+    transactions.map(item => item.category)
+    )].sort();
+    
+    categoryFilter.replaceChildren();
+    
+    const allOption = document.createElement("option");
+    allOption.value = "all";
+    allOption.textContent = "Все категории";
+    categoryFilter.append(allOption);
+    
+    categories.forEach(category => {
+    const option = document.createElement("option");
+    option.value = category;
+    option.textContent = category;
+    categoryFilter.append(option);
     });
-}
+    
+    // Восстанавливаем выбранную категорию
+    categoryFilter.value = categories.includes(selectedCategory)
+    ? selectedCategory
+    : "all";
+    
+    // Фильтруем операции
+    let filtered = [...transactions];
+    
+    if (selectedType !== "all") {
+    filtered = filtered.filter(item =>
+    item.type === selectedType
+    );
+    }
+    
+    if (categoryFilter.value !== "all") {
+    filtered = filtered.filter(item =>
+    item.category === categoryFilter.value
+    );
+    }
+    
+    const now = new Date();
+    const today = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate()
+    );
+    
+    if (selectedPeriod === "today") {
+    filtered = filtered.filter(item =>
+    item.date === [
+    today.getFullYear(),
+    String(today.getMonth() + 1).padStart(2, "0"),
+    String(today.getDate()).padStart(2, "0")
+    ].join("-")
+    );
+    }
+    
+    if (selectedPeriod === "week") {
+    const monday = new Date(today);
+    const day = monday.getDay();
+    monday.setDate(monday.getDate() - (day === 0 ? 6 : day - 1));
+    
+    filtered = filtered.filter(item => {
+    const date = new Date(item.date + "T00:00:00");
+    return date >= monday && date <= today;
+    });
+    }
+    
+    if (selectedPeriod === "month") {
+    filtered = filtered.filter(item => {
+    const date = new Date(item.date + "T00:00:00");
+    
+    return date.getMonth() === now.getMonth() &&
+    date.getFullYear() === now.getFullYear();
+    });
+    }
+    
+    // Обновляем количество операций
+    document.getElementById("operation-count").textContent =
+    filtered.length + " операций";
+    
+    history.replaceChildren();
+    
+    if (filtered.length === 0) {
+    const empty = document.createElement("div");
+    empty.className = "empty-state";
+    
+    const title = document.createElement("p");
+    title.textContent = transactions.length === 0
+    ? "Пока нет операций"
+    : "Операций не найдено";
+    
+    const description = document.createElement("span");
+    description.textContent = transactions.length === 0
+    ? "Добавь свой первый доход или расход"
+    : "Попробуй изменить фильтры";
+    
+    empty.append(title, description);
+    history.append(empty);
+    return;
+    }
+    
+    // Сортируем от новых операций к старым
+    const sorted = filtered.sort((a, b) =>
+    b.date.localeCompare(a.date) || b.id.localeCompare(a.id)
+    );
+    
+    sorted.forEach(item => {
+    const row = document.createElement("div");
+    row.className = "transaction-row";
+    
+    const icon = document.createElement("div");
+    icon.className = "transaction-icon";
+    icon.textContent = item.type === "income" ? "↙️" : "↗️";
+    
+    const details = document.createElement("div");
+    details.className = "transaction-details";
+    
+    const name = document.createElement("strong");
+    name.textContent = item.description;
+    
+    const info = document.createElement("span");
+    info.textContent = `${item.category} · ${item.date}`;
+    
+    details.append(name, info);
+    
+    const right = document.createElement("div");
+    right.className = "transaction-right";
+    
+    const amount = document.createElement("strong");
+    amount.className = item.type;
+    amount.textContent =
+    (item.type === "income" ? "+ " : "− ") +
+    formatMoney(item.amount);
+    
+    const editButton = document.createElement("button");
+    editButton.className = "edit-button";
+    editButton.textContent = "Изменить";
+    editButton.type = "button";
+    editButton.addEventListener("click", () => {
+    editTransaction(item.id);
+    });
+    
+    const deleteButton = document.createElement("button");
+    deleteButton.className = "delete-button";
+    deleteButton.textContent = "Удалить";
+    deleteButton.type = "button";
+    deleteButton.addEventListener("click", () => {
+    deleteTransaction(item.id);
+    });
+    
+    right.append(amount, editButton, deleteButton);
+    row.append(icon, details, right);
+    history.append(row);
+    });
+    }
+    
+    // Обновляем историю при изменении фильтров
+    document.getElementById("filter-type").addEventListener(
+    "change", renderHistory
+    );
+    
+    document.getElementById("filter-category").addEventListener(
+    "change", renderHistory
+    );
+    
+    document.getElementById("filter-period").addEventListener(
+    "change", renderHistory
+    );
+    
 
 function deleteTransaction(id) {
     const previous = transactions;
