@@ -1,174 +1,311 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Деньги+ — Мои финансы</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#061426">
+<title>Деньги+ — Мои финансы</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="app">
+<div class="app">
 
-        <header class="header">
-            <div class="logo">₽</div>
-            <div>
-                <h1>Деньги<span>+</span></h1>
-                <p>Мои финансы</p>
-            </div>
-        </header>
+<header class="header">
+<div class="logo">₽</div>
+<div>
+<h1>Деньги<span>+</span></h1>
+<p>Мои финансы</p>
+</div>
+</header>
 
-        <main>
-            <section class="balance-card">
-                <p>Текущий баланс</p>
-                <h2 id="balance">0 ₽</h2>
+<main>
 
-                <div class="balance-details">
-                    <div class="income">
-                        <span>Доходы</span>
-                        <strong id="income">+ 0 ₽</strong>
-                    </div>
+<!-- ГЛАВНАЯ -->
+<section id="screen-home" class="app-screen">
 
-                    <div class="expense">
-                        <span>Расходы</span>
-                        <strong id="expense">− 0 ₽</strong>
-                    </div>
-                </div>
-            </section>
+<section class="balance-card">
+<p>Текущий баланс</p>
+<h2 id="balance">0 ₽</h2>
 
-            <section class="goals-section">
-                <h2>Мои финансовые цели 🎯</h2>
-            
-                <form id="goal-form" class="goal-form">
-                    <input
-                        type="text"
-                        id="goal-name"
-                        placeholder="На что копим?"
-                        required
-                        maxlength="60"
-                    >
-            
-                    <input
-                        type="number"
-                        id="goal-target"
-                        placeholder="Сколько нужно (₽)"
-                        min="1"
-                        step="0.01"
-                        required
-                    >
-            
-                    <input
-                        type="number"
-                        id="goal-saved"
-                        placeholder="Уже накоплено (₽)"
-                        min="0"
-                        step="0.01"
-                        value="0"
-                        required
-                    >
-            
-                    <button type="submit">Добавить цель</button>
-                </form>
-            
-                <div id="goals-list" class="goals-list">
-                </div>
-            </section>
-            
-            <h3>Быстрое действие</h3>
+<div class="balance-details">
+<div class="income">
+<span>Доходы</span>
+<strong id="income">+ 0 ₽</strong>
+</div>
 
-            <div class="actions">
-                <button class="income-button"
-                    onclick="openForm('income')">
-                    ＋ Добавить доход
-                </button>
+<div class="expense">
+<span>Расходы</span>
+<strong id="expense">− 0 ₽</strong>
+</div>
+</div>
+</section>
+<section class="home-goals panel">
+    <div class="section-heading">
+        <h3>Мои цели 🎯</h3>
+        <span>Накопления</span>
+    </div>
+    <div id="home-goals-list" class="goals-list"></div>
+</section>
 
-                <button class="expense-button"
-                    onclick="openForm('expense')">
-                    − Добавить расход
-                </button>
-            </div>
+<section class="quick-actions">
+<h3>Быстрое действие</h3>
 
-            <section id="operation-form" class="panel" hidden>
-                <h3 id="form-title">Новая операция</h3>
+<div class="actions">
+<button class="income-button"
+onclick="openForm('income')">
+＋ Доход
+</button>
 
-                <form id="transaction-form">
-                    <label for="amount">Сумма, ₽</label>
-                    <input id="amount" type="number"
-                        min="0.01" step="0.01"
-                        placeholder="Например, 1500" required>
+<button class="expense-button"
+onclick="openForm('expense')">
+− Расход
+</button>
+</div>
+</section>
 
-                    <label for="description">Название</label>
-                    <input id="description" type="text"
-                        placeholder="Например, Зарплата" required>
+</section>
 
-                    <label for="category">Категория</label>
-                    <select id="category" required>
-                        <option value="Зарплата">Зарплата</option>
-                        <option value="Продукты">Продукты</option>
-                        <option value="Транспорт">Транспорт</option>
-                        <option value="Развлечения">Развлечения</option>
-                        <option value="Коммуналка">Коммуналка</option>
-                        <option value="Здоровье">Здоровье</option>
-                        <option value="Подарки">Подарки</option>
-                        <option value="Другое">Другое</option>
-                    </select>
 
-                    <label for="date">Дата</label>
-                    <input id="date" type="date" required>
+<!-- ОПЕРАЦИИ -->
+<section id="screen-operations" class="app-screen" hidden>
 
-                    <button class="save-button" type="submit">
-                        Сохранить операцию
-                    </button>
+<section class="panel">
+<div class="section-heading">
+<h3>Все операции</h3>
+<span id="operation-count">0 операций</span>
+</div>
 
-                    <button class="cancel-button"
-                        type="button" onclick="closeForm()">
-                        Отмена
-                    </button>
-                </form>
-            </section>
+<div class="filters">
+<select id="filter-type">
+<option value="all">Все операции</option>
+<option value="income">Доходы</option>
+<option value="expense">Расходы</option>
+</select>
 
-            <section class="panel">
-                <div class="section-heading">
-                    <h3>Последние операции</h3>
-                    <span id="operation-count">0 операций</span>
-                </div>
+<select id="filter-category">
+<option value="all">Все категории</option>
+</select>
 
-                <div class="filters">
-                    <select id="filter-type">
-                        <option value="all">Все операции</option>
-                        <option value="income">Доходы</option>
-                        <option value="expense">Расходы</option>
-                    </select>
-                
-                    <select id="filter-category">
-                        <option value="all">Все категории</option>
-                    </select>
-                
-                    <select id="filter-period">
-                        <option value="all">За всё время</option>
-                        <option value="today">Сегодня</option>
-                        <option value="week">Эта неделя</option>
-                        <option value="month">Этот месяц</option>
-                    </select>
-                </div>
-                
-                </div>
-                <div id="history" class="history">
-                    <div class="empty-state">
-                        <div class="empty-icon">₽</div>
-                        <p>Пока нет операций</p>
-                        <span>Добавь свой первый доход или расход</span>
-                    </div>
-                </div>
-            </section>
-        </main>
+<select id="filter-period">
+<option value="all">За всё время</option>
+<option value="today">Сегодня</option>
+<option value="week">Эта неделя</option>
+<option value="month">Этот месяц</option>
+</select>
+</div>
 
-        <footer>
-            <span>Деньги+ · Учёт личных финансов</span>
-        </footer>
+<div id="history" class="history">
+<div class="empty-state">
+<div class="empty-icon">₽</div>
+<p>Пока нет операций</p>
+<span>Добавь свой первый доход или расход</span>
+</div>
+</div>
+</section>
 
+<button class="income-button"
+onclick="openForm('income')">
+＋ Добавить доход
+</button>
+
+<button class="expense-button"
+onclick="openForm('expense')">
+− Добавить расход
+</button>
+
+</section>
+
+
+<!-- ЦЕЛИ -->
+<section id="screen-goals" class="app-screen" hidden>
+
+<section class="goals-section">
+<h2>Мои финансовые цели 🎯</h2>
+
+<form id="goal-form" class="goal-form">
+
+<input
+type="text"
+id="goal-name"
+placeholder="На что копим?"
+required
+maxlength="60"
+>
+
+<input
+type="number"
+id="goal-target"
+placeholder="Сколько нужно (₽)"
+min="1"
+step="0.01"
+required
+>
+
+<input
+type="number"
+id="goal-saved"
+placeholder="Уже накоплено (₽)"
+min="0"
+step="0.01"
+value="0"
+required
+>
+
+<button type="submit">Добавить цель</button>
+
+</form>
+
+<div id="goals-list" class="goals-list"></div>
+</section>
+
+</section>
+
+
+<!-- АНАЛИТИКА -->
+<section id="screen-analytics" class="app-screen" hidden>
+
+<section class="panel">
+<h3>Аналитика</h3>
+
+<div class="analytics-summary">
+    <div>
+        <span>Доходы</span>
+        <strong id="analytics-income">0 ₽</strong>
     </div>
 
-    <script src="script.js"></script>
+    <div>
+        <span>Расходы</span>
+        <strong id="analytics-expense">0 ₽</strong>
+    </div>
+
+    <div>
+        <span>Разница</span>
+        <strong id="analytics-balance">0 ₽</strong>
+    </div>
+</div>
+
+<h3>Структура расходов</h3>
+
+<div class="analytics-chart-wrapper">
+
+    <div id="analytics-chart" class="analytics-chart">
+        <div class="chart-center">
+            <span>Всего доходов</span>
+            <strong id="chart-total">0 ₽</strong>
+        </div>
+    </div>
+
+    <div id="analytics-legend" class="analytics-legend"></div>
+    <h3>Расходы по месяцам</h3>
+
+<div class="monthly-chart-wrapper">
+    <div id="monthly-chart" class="monthly-chart"></div>
+</div>
+
+</div>
+<div id="analytics-categories"></div>
+</section>
+
+</section>
+
+
+<!-- ФОРМА ОПЕРАЦИИ -->
+<section id="operation-form" class="panel" hidden>
+
+<h3 id="form-title">Новая операция</h3>
+
+<form id="transaction-form">
+
+<label for="amount">Сумма, ₽</label>
+<input
+id="amount"
+type="number"
+min="0.01"
+step="0.01"
+placeholder="Например, 1500"
+required
+>
+
+<label for="description">Название</label>
+<input
+id="description"
+type="text"
+placeholder="Например, Зарплата"
+required
+>
+
+<label for="category">Категория</label>
+<select id="category" required>
+<option value="Зарплата">Зарплата</option>
+<option value="Продукты">Продукты</option>
+<option value="Транспорт">Транспорт</option>
+<option value="Развлечения">Развлечения</option>
+<option value="Коммуналка">Коммуналка</option>
+<option value="Здоровье">Здоровье</option>
+<option value="Подарки">Подарки</option>
+<option value="Другое">Другое</option>
+</select>
+
+<label for="date">Дата</label>
+<input id="date" type="date" required>
+
+<button class="save-button" type="submit">
+Сохранить операцию
+</button>
+
+<button class="cancel-button"
+type="button"
+onclick="closeForm()">
+Отмена
+</button>
+
+</form>
+</section>
+
+</main>
+
+
+<!-- НИЖНЯЯ НАВИГАЦИЯ -->
+<nav class="bottom-nav">
+
+<button class="nav-button active"
+type="button"
+data-screen="home">
+<span class="nav-icon">⌂</span>
+<span>Главная</span>
+</button>
+
+<button class="nav-button"
+type="button"
+data-screen="operations">
+<span class="nav-icon">☷</span>
+<span>Операции</span>
+</button>
+
+<button class="nav-button"
+type="button"
+data-screen="goals">
+<span class="nav-icon">◎</span>
+<span>Цели</span>
+</button>
+
+<button class="nav-button"
+type="button"
+data-screen="analytics">
+<span class="nav-icon">▥</span>
+<span>Аналитика</span>
+</button>
+
+</nav>
+
+<footer>
+<span>Деньги+ · Учёт личных финансов</span>
+</footer>
+
+</div>
+
+<script src="script.js"></script>
+
 </body>
 </html>
